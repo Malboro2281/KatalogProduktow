@@ -20,5 +20,34 @@ namespace KatalogProduktow
         {
             InitializeComponent();
         }
+
+        private void NazwaTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        private void Oblicz(object sender, RoutedEventArgs e)
+        {
+            int cena;
+            int ilosc;  
+
+            if (int.TryParse(CenaTextBox.Text, out cena) && int.TryParse(IloscTextBox.Text, out ilosc)) // double.TryParse dla liczb z przecinkiem
+            {
+
+                if (cena < 0 || ilosc < 0)
+                {
+                    WynikTextBlock.Text = "Podaj wartości większe od zera!";
+
+                }
+                else
+                {
+                    WynikTextBlock.Text = "Wynik: " + cena * ilosc;
+                }
+                }
+            else
+            {
+                WynikTextBlock.Text = "Podaj poprawne wartości!";
+            }
+        }
     }
 }
