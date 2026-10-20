@@ -11,43 +11,31 @@ using System.Windows.Shapes;
 
 namespace KatalogProduktow
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
+   
     public partial class MainWindow : Window
     {
         public MainWindow()
         {
             InitializeComponent();
-        }
-
-        private void NazwaTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
+            KategorieComboBox.ItemsSource = new string[] { "Elektronika", "Odzież", "Książki", "Meble" };
+            KategorieComboBox.SelectedIndex = 0;
         }
 
         private void Oblicz(object sender, RoutedEventArgs e)
         {
-            int cena;
-            int ilosc;  
-
-            if (int.TryParse(CenaTextBox.Text, out cena) && int.TryParse(IloscTextBox.Text, out ilosc)) // double.TryParse dla liczb z przecinkiem
+         
+            if (!double.TryParse(CenaTextBox.Text, out double cena))
             {
-
-                if (cena < 0 || ilosc < 0)
-                {
-                    WynikTextBlock.Text = "Podaj wartości większe od zera!";
-
-                }
-                else
-                {
-                    WynikTextBlock.Text = "Wynik: " + cena * ilosc;
-                }
-                }
-            else
-            {
-                WynikTextBlock.Text = "Podaj poprawne wartości!";
+                WynikTextBlock.Text = "Niepoprawna wartość ceny";
+                return;
             }
+            if (!int.TryParse(IloscTextBox.Text, out int ilosc))
+            {
+                WynikTextBlock.Text = "Niepoprawna wartość ilości";
+                return;
+            }
+            double wartoscZamowienia = cena * ilosc;
+            WynikTextBlock.Text = wartoscZamowienia.ToString();
         }
     }
 }

@@ -5,15 +5,47 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KatalogProduktow"
         mc:Ignorable="d"
-        Title="MainWindow" Height="400" Width="450">
-    <StackPanel Margin="20,20,20,20" Width="400" Height="400">
-        <TextBlock Text="Nazwa Produktu"/>
-        <TextBox x:Name="NazwaTextBox"  Margin="0,5,0,10" />
-        <TextBlock Text="Cena:"/>
-        <TextBox x:Name="CenaTextBox" Margin="0,5,0,10" />
-        <TextBlock Text="Ilosc:"/>
-        <TextBox x:Name="IloscTextBox" Margin="0,5,0,10"/>
-        <Button x:Name="ObliczButton" Content="Oblicz Wartosc" Click="Oblicz"/>
-        <TextBlock x:Name="WynikTextBlock" FontSize="16"/>
-    </StackPanel>
+        Title="MainWindow" Height="400" Width="400">
+    <Grid Margin="20,20,20,20">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            
+            <ColumnDefinition Width="*" />
+            
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+           
+            <RowDefinition Height="Auto"/>
+         
+            <RowDefinition Height="Auto"/>
+           
+            <RowDefinition Height="Auto"/>
+          
+            <RowDefinition Height="Auto"/>
+            
+            <RowDefinition Height="Auto"/>
+           
+            <RowDefinition Height="*"/>
+           
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="Nazwa produktu" Margin="0,0,10,0" VerticalAlignment="Center" />
+        <TextBox x:Name="NazwaTextBox" Grid.Row="0" Grid.Column="1" Margin="0,5,0,10" VerticalAlignment="Center" />
+
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="Cena" VerticalAlignment="Center" />
+        <TextBox x:Name="CenaTextBox" Grid.Row="1" Grid.Column="1" Margin="0,5,0,10" VerticalAlignment="Center" />
+
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="Ilość" VerticalAlignment="Center" />
+        <TextBox x:Name="IloscTextBox" Grid.Row="2" Grid.Column="1" Margin="0,5,0,10" VerticalAlignment="Center" />
+
+        <TextBlock Grid.Row="3" Grid.Column="0" Text="Kategoria" VerticalAlignment="Center" />
+        <ComboBox x:Name="KategorieComboBox" Grid.Row="3" Grid.Column="1" Margin="0,5,0,10" VerticalAlignment="Center" />
+
+        <TextBlock Grid.Row="4" Grid.Column="0" Text="Promocja" VerticalAlignment="Center" />
+        <CheckBox x:Name="PromocjaCheckBox" Grid.Row="4" Grid.Column="1" Margin="0,5,0,10" VerticalAlignment="Center" />
+
+        <Button x:Name="ObliczButton" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Content="Oblicz wartość" Click="Oblicz"/>
+
+        <TextBlock x:Name="WynikTextBlock" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" FontSize="16"/>
+    </Grid>
 </Window>
