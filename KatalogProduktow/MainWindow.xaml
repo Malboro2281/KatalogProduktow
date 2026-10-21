@@ -9,25 +9,31 @@
     <Grid Margin="20,20,20,20">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
-            
+            <!-- tyle ile potrzebujesz -->
             <ColumnDefinition Width="*" />
-            
+            <!-- tyle ile zostanie -->
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-           
+            <!-- nazwa -->
             <RowDefinition Height="Auto"/>
-         
+            <!-- cena -->
             <RowDefinition Height="Auto"/>
-           
+            <!-- ilość -->
             <RowDefinition Height="Auto"/>
-          
+            <!-- combobox - kategorie -->
             <RowDefinition Height="Auto"/>
-            
+            <!-- checkbox promocje -->
             <RowDefinition Height="Auto"/>
-           
-            <RowDefinition Height="*"/>
-           
+            <!-- przycisk -->
+            <RowDefinition Height="Auto"/>
+            <!-- wynik -->
+            <RowDefinition Height="Auto"/>
+            <!-- guzik dodaj -->
+            <RowDefinition Height="*" />
+            <!-- lista produktów -->
+            <RowDefinition Height="Auto"/>
+            <!-- guzik usuń  -->
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" Grid.Column="0" Text="Nazwa produktu" Margin="0,0,10,0" VerticalAlignment="Center" />
         <TextBox x:Name="NazwaTextBox" Grid.Row="0" Grid.Column="1" Margin="0,5,0,10" VerticalAlignment="Center" />
@@ -46,6 +52,32 @@
 
         <Button x:Name="ObliczButton" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Content="Oblicz wartość" Click="Oblicz"/>
 
-        <TextBlock x:Name="WynikTextBlock" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" FontSize="16"/>
+        <TextBlock x:Name="WynikTextBlock" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" FontSize="16" Margin="0,12,0,12"/>
+        <Button x:Name="DodajProduktButton" Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Content="Dodaj produkt" Click="DodajProdukt"/>
+        <!-- lista produktów w (przed)ostatnim wierszu, szerokość dwóch kolumn, margines z góry 12px -->
+        <ListBox x:Name="ListaProduktow" ItemsSource="{Binding produkty}" Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,12,0,12">
+            <!-- miejsce na szablon wyświetlanych danych -->
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Margin="0,2">
+                        <!-- stackpanel zeby rzeczy wyświetlały się obok siebie -->
+                        <TextBlock Text="{Binding Nazwa}" FontWeight="Bold" />
+                        <TextBlock>
+                            <Run Text="{Binding Kategoria}" />
+                            <Run Text=" - " />
+                            <Run Text="{Binding Cena, StringFormat={}{0:F2} zł}" />
+                        </TextBlock>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <Button x:Name="UsunProduktButton" Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2" Content="Usuń produkt" Click="UsunProdukt" />
+        <StackPanel Grid.Row="0" Grid.Column="2" Grid.RowSpan="10" Margin="20,0,0,0" 
+                    DataContext="{Binding SelectedItem, ElementName=ListaProduktow}">
+            <TextBlock Text="{Binding Nazwa}" FontSize="18" />
+            <TextBlock Text="{Binding Ilosc, StringFormat=Na stanie {0} szt.}" />
+            <TextBlock Text="{Binding Cena, StringFormat=Cena: {0:F2} zł}" />
+            <!-- TODO: dodaj wartość magazynu - będziesz potrzebować publicznej właściwości w klasie Produkt -->
+        </StackPanel>
     </Grid>
 </Window>
