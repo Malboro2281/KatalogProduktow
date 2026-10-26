@@ -65,13 +65,31 @@ namespace KatalogProduktow
 
         private void DodajProdukt(object sender, RoutedEventArgs e)
         {
-            string nazwa = NazwaTextBox.Text;
-            double cena = double.Parse(CenaTextBox.Text);
-            int ilosc = int.Parse(IloscTextBox.Text);
-            string kategoria = KategorieComboBox.SelectedItem as string ?? "brak kategorii";
+            if (string.IsNullOrWhiteSpace(NazwaTextBox.Text))
+            {
+                MessageBox.Show("Podaj nazwę produktu.");
+                return;
+            }
+            if (!double.TryParse(CenaTextBox.Text, out double cena) || cena < 0)
+            {
+                MessageBox.Show("Niepoprawna wartość ceny.");
+                return;
+            }
+            if (!int.TryParse(IloscTextBox.Text, out int ilosc) || ilosc < 0)
+            { 
 
-            produkty.Add(new Produkt { Nazwa = nazwa, Cena = cena, Ilosc = ilosc, Kategoria = kategoria });
+                MessageBox.Show("Niepoprawna wartość ilości.");
+                return;
+            }
 
+            produkty.Add(new Produkt
+            {
+                Nazwa = NazwaTextBox.Text,
+                Cena = cena,
+                Ilosc = ilosc,
+                Kategoria = KategorieComboBox.SelectedItem as string ?? "brak kategorii",
+                Promocja = PromocjaCheckBox.IsChecked == true
+            });
         }
 
         private void UsunProdukt(object sender, RoutedEventArgs e)
