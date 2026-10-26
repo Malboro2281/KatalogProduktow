@@ -69,6 +69,7 @@
         </ListView>
         <Button x:Name="UsunProduktButton" Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2" Content="Usuń produkt" Click="UsunProdukt" />
         <StackPanel Grid.Row="0" Grid.Column="2" Grid.RowSpan="10" Margin="20,0,0,0" 
+                    
                     DataContext="{Binding SelectedItem, ElementName=ListaProduktow}">
             <TextBlock Text="{Binding Nazwa}" FontSize="18" />
             <TextBlock Text="{Binding Ilosc, StringFormat=Na stanie {0} szt.}" />
