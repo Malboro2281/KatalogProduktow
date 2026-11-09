@@ -1,4 +1,6 @@
-﻿using System.Collections.ObjectModel;
+﻿using KatalogProduktow;
+using System.Collections.ObjectModel;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -10,7 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace KatalogProduktow
+namespace KatalogProduktow4K
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -65,31 +67,13 @@ namespace KatalogProduktow
 
         private void DodajProdukt(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(NazwaTextBox.Text))
-            {
-                MessageBox.Show("Podaj nazwę produktu.");
-                return;
-            }
-            if (!double.TryParse(CenaTextBox.Text, out double cena) || cena < 0)
-            {
-                MessageBox.Show("Niepoprawna wartość ceny.");
-                return;
-            }
-            if (!int.TryParse(IloscTextBox.Text, out int ilosc) || ilosc < 0)
-            { 
+            string nazwa = NazwaTextBox.Text;
+            double cena = double.Parse(CenaTextBox.Text);
+            int ilosc = int.Parse(IloscTextBox.Text);
+            string kategoria = KategorieComboBox.SelectedItem as string ?? "brak kategorii";
 
-                MessageBox.Show("Niepoprawna wartość ilości.");
-                return;
-            }
+            produkty.Add(new Produkt { Nazwa = nazwa, Cena = cena, Ilosc = ilosc, Kategoria = kategoria });
 
-            produkty.Add(new Produkt
-            {
-                Nazwa = NazwaTextBox.Text,
-                Cena = cena,
-                Ilosc = ilosc,
-                Kategoria = KategorieComboBox.SelectedItem as string ?? "brak kategorii",
-                Promocja = PromocjaCheckBox.IsChecked == true
-            });
         }
 
         private void UsunProdukt(object sender, RoutedEventArgs e)
@@ -102,6 +86,32 @@ namespace KatalogProduktow
             {
                 MessageBox.Show("Nie wybrano produktu do usunięcia.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+        private void PokazZaznaczony(object sender, SelectionChangedEventArgs e)
+        {
+            if (ListaProduktow.SelectedItem is not Produkt p) return;
+            //tego juz nie musimy sprawdzać, bo w if sprawdzamy czy jest to Produkt
+            //Produkt p = ListaProduktow.SelectedItem as Produkt;
+            NazwaTextBox.Text = p.Nazwa;
+            CenaTextBox.Text = p.Cena.ToString("F2");
+            IloscTextBox.Text = p.Ilosc.ToString();
+        }
+
+        private void Zapisz(object sender, RoutedEventArgs e)
+        {
+            //sprawdz czy mamy prawidłowo zaznaczony na liście produkt,
+            //bo jeśli nie to nie zapisujemy
+            if (ListaProduktow.SelectedItem is not Produkt p) return;
+            //po drugie parsujemy cene i ilosc, bo to są stringi w TextBoxach
+            if (!double.TryParse(CenaTextBox.Text, out double cena) || cena < 0) return;
+            if (!int.TryParse(IloscTextBox.Text, out int ilosc) || ilosc < 0) return;
+            string nazwa = NazwaTextBox.Text;
+            //aktualizujemy właściwości obiektu Produkt, który jest w kolekcji ObservableCollection
+            p.Nazwa = nazwa;
+            p.Cena = cena;
+            p.Ilosc = ilosc;
+            WynikTextBlock.Text = $"Zapisano zmiany dla produktu: {p.Nazwa}";
         }
     }
 }
