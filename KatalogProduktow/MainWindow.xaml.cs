@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Globalization;
 
 namespace KatalogProduktow4K
 {
@@ -67,14 +68,29 @@ namespace KatalogProduktow4K
 
         private void DodajProdukt(object sender, RoutedEventArgs e)
         {
-            string nazwa = NazwaTextBox.Text;
-            double cena = double.Parse(CenaTextBox.Text);
-            int ilosc = int.Parse(IloscTextBox.Text);
+            string nazwa = NazwaTextBox.Text.Trim();
+            if (nazwa == "")
+            {
+                MessageBox.Show("Nazwa nie może być pusta.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            // Replace zamienia kropkę na przecinek, żeby działały obie wersje (12,50 i 12.50)
+            if (!double.TryParse(CenaTextBox.Text.Replace('.', ','), out double cena) || cena < 0)
+            {
+                MessageBox.Show("Niepoprawna wartość ceny.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            if (!int.TryParse(IloscTextBox.Text, out int ilosc) || ilosc < 0)
+            {
+                MessageBox.Show("Niepoprawna wartość ilości.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
             string kategoria = KategorieComboBox.SelectedItem as string ?? "brak kategorii";
 
             produkty.Add(new Produkt { Nazwa = nazwa, Cena = cena, Ilosc = ilosc, Kategoria = kategoria });
 
         }
+        
 
         private void UsunProdukt(object sender, RoutedEventArgs e)
         {
