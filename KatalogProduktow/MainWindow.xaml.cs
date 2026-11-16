@@ -90,13 +90,17 @@ namespace KatalogProduktow4K
             produkty.Add(new Produkt { Nazwa = nazwa, Cena = cena, Ilosc = ilosc, Kategoria = kategoria });
 
         }
-        
+
 
         private void UsunProdukt(object sender, RoutedEventArgs e)
         {
             if (ListaProduktow.SelectedItem is Produkt wybranyProdukt)
             {
-                produkty.Remove(wybranyProdukt);
+                var wynik = MessageBox.Show($"Czy na pewno usunąć produkt '{wybranyProdukt.Nazwa}'?", "Potwierdzenie", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (wynik == MessageBoxResult.Yes)
+                {
+                    produkty.Remove(wybranyProdukt);
+                }
             }
             else
             {
@@ -118,11 +122,28 @@ namespace KatalogProduktow4K
         {
             //sprawdz czy mamy prawidłowo zaznaczony na liście produkt,
             //bo jeśli nie to nie zapisujemy
-            if (ListaProduktow.SelectedItem is not Produkt p) return;
+            if (ListaProduktow.SelectedItem is not Produkt p)
+            {
+                MessageBox.Show("Nie wybrano produktu do edycji.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
             //po drugie parsujemy cene i ilosc, bo to są stringi w TextBoxach
-            if (!double.TryParse(CenaTextBox.Text, out double cena) || cena < 0) return;
-            if (!int.TryParse(IloscTextBox.Text, out int ilosc) || ilosc < 0) return;
-            string nazwa = NazwaTextBox.Text;
+            if (!double.TryParse(CenaTextBox.Text.Replace('.', ','), out double cena) || cena < 0)
+            {
+                MessageBox.Show("Niepoprawna wartość ceny.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            if (!int.TryParse(IloscTextBox.Text, out int ilosc) || ilosc < 0)
+            {
+                MessageBox.Show("Niepoprawna wartość ilości.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            string nazwa = NazwaTextBox.Text.Trim();
+            if (nazwa == "")
+            {
+                MessageBox.Show("Nazwa nie może być pusta.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
             //aktualizujemy właściwości obiektu Produkt, który jest w kolekcji ObservableCollection
             p.Nazwa = nazwa;
             p.Cena = cena;
